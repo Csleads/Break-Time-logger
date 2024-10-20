@@ -91,6 +91,6 @@ window.onload = () => {
 
 // Add this to your index.html file or a separate JavaScript file
 var password = prompt("Please enter the password to access this page:");
-if (password !== "csbreak76") {
+if (password !== "csḃreak76") {
     document.body.innerHTML = "Unauthorized Access";
 }
