@@ -88,3 +88,8 @@ window.onload = () => {
     // Check for daily reset every minute
     setInterval(resetDailySlots, 60000); // Check every minute
 };
+
+var password = prompt("Please enter the password to access this page:");
+if (password !== "csḃreak76") {
+    document.body.innerHTML = "Unauthorized Access";
+}
