@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Break Time Slots</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Agent Break Time Slot Manager</h1>
+            <div class="current-time" id="currentTime"></div>
+        </header>
+
+        <table class="time-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Agent 1</th>
+                    <th>Agent 2</th>
+                    <th>Agent 3</th>
+                    <th>Agent 4</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Time slots will be dynamically generated -->
+            </tbody>
+        </table>
+
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
