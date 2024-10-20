@@ -88,3 +88,9 @@ window.onload = () => {
     // Check for daily reset every minute
     setInterval(resetDailySlots, 60000); // Check every minute
 };
+
+// Add this to your index.html file or a separate JavaScript file
+var password = prompt("Please enter the password to access this page:");
+if (password !== "csbreak76") {
+    document.body.innerHTML = "Unauthorized Access";
+}
