@@ -20,7 +20,6 @@ body {
     background-color: #fff;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    animation: fadeIn 0.5s ease;
     max-width: 100%;
 }
 
@@ -60,7 +59,6 @@ h1 {
 .time-table th {
     background-color: #0366d6;
     color: white;
-    text-transform: uppercase;
     font-weight: 500;
     font-size: 16px;
 }
@@ -93,50 +91,24 @@ h1 {
     transition: border 0.3s ease, background-color 0.3s ease;
 }
 
-/* Input field hover animation */
-.time-table td input:hover {
-    transform: scale(1.03);
-    transition: transform 0.2s ease;
-}
-
 /* Hover effect for rows */
 .time-table tr:hover td {
     background-color: #eef4fb;
 }
 
-/* Error message */
-.error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
+/* Reset button hidden by default */
+#adminResetButton {
+    display: none;
+    padding: 10px 20px;
+    background-color: #0366d6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 22px;
-    }
-
-    .time-table th, .time-table td {
-        font-size: 13px;
-        padding: 10px;
-    }
-
-    .time-table td input {
-        width: 100%;
-        padding: 8px;
-    }
-}
-
-/* Keyframes for animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Reset button hover effect */
+#adminResetButton:hover {
+    background-color: #0350a3;
 }
