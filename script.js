@@ -143,20 +143,3 @@ window.onload = () => {
     displayCurrentTime();  // Display current time
     startAutoClear();  // Start the 12-hour auto-clear cycle
 };
-
- const firebaseConfig = {
-    apiKey: "AIzaSyA_ZfIN4L2lxv7nD9kMIXW-lHuvbR-9iyE",
-    authDomain: "break-time-logger-db46a.firebaseapp.com",
-    projectId: "break-time-logger-db46a",
-    storageBucket: "break-time-logger-db46a.appspot.com",
-    messagingSenderId: "46728777778",
-    appId: "1:46728777778:web:15870f5ea02ba9cd7b2c2b",
-    measurementId: "G-QY9QRWH3YZ"
-  };
-
-   
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
-
-
