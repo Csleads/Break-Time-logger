@@ -1,4 +1,4 @@
-/* Basic reset and font */
+/* Global styles */
 * {
     margin: 0;
     padding: 0;
@@ -7,37 +7,42 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #f7f9fc;
+    background-color: #f9fafc;
     color: #333;
     padding: 20px;
+    font-size: 16px;
 }
 
+/* Full-width container */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
     padding: 20px;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    animation: fadeIn 0.5s ease;
+    max-width: 100%; /* Make sure container spans full width */
 }
 
+/* Header styles */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 h1 {
     font-weight: 600;
     color: #0366d6;
+    font-size: 28px;
 }
 
 .current-time {
+    margin-top: 10px;
     font-size: 18px;
     color: #586069;
-    margin-top: 10px;
 }
 
-/* Table styling */
+/* Table styles */
 .time-table {
     width: 100%;
     border-collapse: collapse;
@@ -47,44 +52,53 @@ h1 {
 .time-table th,
 .time-table td {
     padding: 15px;
-    border-bottom: 1px solid #e1e4e8;
     text-align: center;
+    border-bottom: 1px solid #e1e4e8;
+    transition: background-color 0.3s ease;
 }
 
 .time-table th {
     background-color: #0366d6;
     color: white;
     text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .time-table td {
     background-color: #f6f8fa;
 }
 
+/* Input fields */
 .time-table td input {
-    width: 80%;
-    padding: 8px;
-    border: 1px solid #d1d5da;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #e1e4e8;
     border-radius: 6px;
     font-size: 14px;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
 .time-table td input:focus {
     border-color: #0366d6;
+    box-shadow: 0 0 10px rgba(3, 102, 214, 0.3);
     outline: none;
+    background-color: #eef4fb;
 }
 
-.time-table td input[type="checkbox"] {
-    margin-right: 10px;
+/* Input field hover animation */
+.time-table td input:hover {
+    transform: scale(1.03);
+    transition: transform 0.2s ease;
 }
 
-.slot {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Hover effect for rows */
+.time-table tr:hover td {
+    background-color: #eef4fb;
 }
 
+/* Error message */
 .error {
     color: red;
     font-size: 14px;
@@ -92,14 +106,10 @@ h1 {
     margin-top: 10px;
 }
 
-/* Responsive Design */
+/* Responsive styles */
 @media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
     h1 {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .time-table th, .time-table td {
@@ -109,6 +119,18 @@ h1 {
 
     .time-table td input {
         width: 100%;
-        padding: 6px;
+        padding: 8px;
+    }
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
