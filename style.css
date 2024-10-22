@@ -1,130 +1,122 @@
-// Time zone for Georgia (Tbilisi)
-const TIMEZONE = 'Asia/Tbilisi';
-
-// Time slots with 4 slots per half-hour
-const timeSlots = [
-    "09:00", "09:30", "10:00", "10:30", "11:00", 
-    "12:00", "13:00", "14:00", "15:00", 
-    "17:00", "18:00", "19:00", "20:00", "21:00",
-    "22:00", "23:00", "00:00", "01:00", "02:00", 
-    "03:00", "04:00", "05:00", "06:00", "07:00"
-];
-
-// Initialize or retrieve agentSlots from localStorage
-let agentSlots = JSON.parse(localStorage.getItem('agentSlots')) || {};
-
-// Function to display current Tbilisi date and time
-function displayCurrentTime() {
-    const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
-    const tbilisiDate = new Date(now).toLocaleDateString("en-GB", { day: '2-digit', month: '2-digit', year: 'numeric' });
-    const tbilisiTime = new Date(now).toLocaleTimeString("en-GB", { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    document.getElementById('currentTime').textContent = `Current Tbilisi Date: ${tbilisiDate}, Time: ${tbilisiTime}`;
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-// Update time every second
-setInterval(displayCurrentTime, 1000);
-
-// Function to create time slots in the table
-function createTimeSlots() {
-    const tableBody = document.getElementById('tableBody');
-
-    timeSlots.forEach((slot) => {
-        const row = document.createElement('tr');
-        const timeCell = document.createElement('td');
-        timeCell.textContent = slot;
-        row.appendChild(timeCell);
-
-        for (let i = 1; i <= 4; i++) {
-            const cell = document.createElement('td');
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = agentSlots[slot] && agentSlots[slot][i - 1] ? agentSlots[slot][i - 1] : '';
-            input.placeholder = 'Enter Name';
-
-            if (input.value) {
-                input.classList.add('occupied');
-                input.readOnly = true;
-            }
-
-            input.onchange = function () {
-                updateSlot(slot, input.value, i);
-                input.classList.add('occupied');
-                input.readOnly = true;
-            };
-
-            cell.addEventListener('click', () => {
-                if (isEditMode && input.value !== '') {
-                    clearSlot(slot, i);
-                }
-            });
-
-            cell.appendChild(input);
-            row.appendChild(cell);
-        }
-
-        tableBody.appendChild(row);
-    });
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafc;
+    color: #333;
+    padding: 20px;
+    font-size: 16px;
 }
 
-// Function to clear a specific slot
-function clearSlot(timeSlot, agentNumber) {
-    if (agentSlots[timeSlot]) {
-        agentSlots[timeSlot][agentNumber - 1] = '';
-        localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
-        location.reload();
+/* Full-width container */
+.container {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    max-width: 100%;
+}
+
+/* Header styles */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-weight: 600;
+    color: #0366d6;
+    font-size: 28px;
+}
+
+.current-time {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #586069;
+}
+
+/* Table styles */
+.time-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.time-table th,
+.time-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #e1e4e8;
+    transition: background-color 0.3s ease;
+}
+
+.time-table th {
+    background-color: #0366d6;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.time-table td {
+    background-color: #f6f8fa;
+}
+
+/* Input fields */
+.time-table td input {
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.time-table td input:focus {
+    border-color: #0366d6;
+    outline: none;
+    background-color: #eef4fb;
+}
+
+/* Occupied slots with modern border and background */
+.time-table td input.occupied {
+    background-color: #ffe6e6;
+    border-color: #ff4d4d;
+    transition: border 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover effect for rows */
+.time-table tr:hover td {
+    background-color: #eef4fb;
+}
+
+/* Error message */
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    .time-table th, .time-table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .time-table td input {
+        width: 100%;
+        padding: 8px;
     }
 }
-
-// Function to update the agent slot and save to localStorage
-function updateSlot(slot, agentName, slotNumber) {
-    if (!agentSlots[slot]) {
-        agentSlots[slot] = [];
-    }
-    agentSlots[slot][slotNumber - 1] = agentName;
-    localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
-}
-
-// Function to clear all slots
-function resetAllSlots() {
-    document.querySelectorAll('td input[type="text"]').forEach(input => {
-        input.value = '';
-        input.readOnly = false;
-        input.classList.remove('occupied');
-    });
-    localStorage.removeItem('agentSlots');
-}
-
-// Toggle the visibility of the reset button with Ctrl + I
-let isResetButtonVisible = false;
-let isEditMode = false;
-
-document.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && event.key === 'i') {
-        event.preventDefault();
-        const resetButton = document.getElementById('adminResetButton');
-        if (!isResetButtonVisible) {
-            resetButton.style.display = 'inline-block';
-            isEditMode = true;
-        } else {
-            resetButton.style.display = 'none';
-            isEditMode = false;
-        }
-        isResetButtonVisible = !isResetButtonVisible;
-    }
-});
-
-// Function to reset daily at 08:00 Tbilisi time
-function resetDailyAt8AM() {
-    const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
-    const currentDateTime = new Date(now);
-
-    if (currentDateTime.getHours() === 8 && currentDateTime.getMinutes() === 0 && currentDateTime.getSeconds() === 0) {
-        resetAllSlots();
-    }
-}
-
-window.onload = () => {
-    createTimeSlots();
-    displayCurrentTime();
-    setInterval(resetDailyAt8AM, 1000);
-};
