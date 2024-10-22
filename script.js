@@ -44,15 +44,17 @@ function createTimeSlots() {
             input.value = agentSlots[slot] && agentSlots[slot][i - 1] ? agentSlots[slot][i - 1] : '';
             input.placeholder = 'Enter Name';
 
-            // If the name was already entered, make the input read-only
+            // If the name was already entered, add occupied class and make the input read-only
             if (input.value) {
+                input.classList.add('occupied'); // Add modern border effect
                 input.readOnly = true;
             }
 
-            // Update localStorage and set to read-only after entry
+            // Update localStorage and add modern effect after entry
             input.onchange = function () {
                 updateSlot(slot, input.value, i);
-                input.readOnly = true;  // Make the input read-only after name is entered
+                input.classList.add('occupied');  // Add occupied border effect
+                input.readOnly = true;            // Make the input read-only
             };
 
             cell.appendChild(input);
@@ -81,6 +83,7 @@ function resetAllSlots() {
     document.querySelectorAll('td input[type="text"]').forEach(input => {
         input.value = '';
         input.readOnly = false; // Allow editing again after reset
+        input.classList.remove('occupied');  // Remove the occupied class
     });
 
     // Clear the localStorage
