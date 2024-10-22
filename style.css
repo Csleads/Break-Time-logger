@@ -96,19 +96,27 @@ h1 {
     background-color: #eef4fb;
 }
 
-/* Reset button hidden by default */
-#adminResetButton {
-    display: none;
-    padding: 10px 20px;
-    background-color: #0366d6;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 20px;
+/* Error message */
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
 }
 
-/* Reset button hover effect */
-#adminResetButton:hover {
-    background-color: #0350a3;
+/* Responsive styles */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 22px;
+    }
+
+    .time-table th, .time-table td {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    .time-table td input {
+        width: 100%;
+        padding: 8px;
+    }
 }
