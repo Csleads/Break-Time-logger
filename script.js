@@ -143,3 +143,27 @@ window.onload = () => {
     displayCurrentTime();  // Display current time
     startAutoClear();  // Start the 12-hour auto-clear cycle
 };
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyA_ZfIN4L2lxv7nD9kMIXW-lHuvbR-9iyE",
+    authDomain: "break-time-logger-db46a.firebaseapp.com",
+    projectId: "break-time-logger-db46a",
+    storageBucket: "break-time-logger-db46a.appspot.com",
+    messagingSenderId: "46728777778",
+    appId: "1:46728777778:web:15870f5ea02ba9cd7b2c2b",
+    measurementId: "G-QY9QRWH3YZ"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
