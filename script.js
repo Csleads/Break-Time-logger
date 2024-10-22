@@ -42,19 +42,23 @@ function createTimeSlots() {
             input.placeholder = 'Enter Name';
 
             if (input.value) {
-                input.classList.add('occupied');
-                input.readOnly = true;
+                input.classList.add('occupied');  // Indicate slot is occupied
+                input.readOnly = true;  // Make it read-only
             }
 
+            // Handle input change
             input.onchange = function () {
                 updateSlot(slot, input.value, i);
-                input.classList.add('occupied');
-                input.readOnly = true;
+                input.classList.add('occupied');  // Mark as occupied
+                input.readOnly = true;  // Make it read-only after entering the name
+                startAutoClear();  // Restart the auto-clear timer after input change
             };
 
+            // Allow specific slot clearing in edit mode
             cell.addEventListener('click', () => {
                 if (isEditMode && input.value !== '') {
-                    clearSlot(slot, i);
+                    clearSlot(slot, i);  // Clear the specific slot when clicked
+                    startAutoClear();  // Restart the auto-clear timer after clearing the slot
                 }
             });
 
@@ -66,65 +70,76 @@ function createTimeSlots() {
     });
 }
 
-// Function to clear a specific slot
-function clearSlot(timeSlot, agentNumber) {
-    if (agentSlots[timeSlot]) {
-        agentSlots[timeSlot][agentNumber - 1] = '';
-        localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
-        location.reload();
-    }
-}
-
-// Function to update the agent slot and save to localStorage
+// Function to update a specific slot and save it to localStorage
 function updateSlot(slot, agentName, slotNumber) {
     if (!agentSlots[slot]) {
         agentSlots[slot] = [];
     }
-    agentSlots[slot][slotNumber - 1] = agentName;
-    localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
+    agentSlots[slot][slotNumber - 1] = agentName;  // Update the specific slot
+    localStorage.setItem('agentSlots', JSON.stringify(agentSlots));  // Save to localStorage
+}
+
+// Function to clear a specific slot
+function clearSlot(timeSlot, agentNumber) {
+    if (agentSlots[timeSlot]) {
+        agentSlots[timeSlot][agentNumber - 1] = '';  // Clear the specific slot
+        localStorage.setItem('agentSlots', JSON.stringify(agentSlots));  // Update localStorage
+        location.reload();  // Reload to reflect changes
+    }
+}
+
+// Function to automatically clear all slots at 8 AM and 8 PM Georgian time
+function startAutoClear() {
+    const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
+    const currentDateTime = new Date(now);
+
+    // Calculate time until the next clearing (either 8 AM or 8 PM)
+    let nextClearTime = new Date(currentDateTime);
+    const currentHour = currentDateTime.getHours();
+
+    if (currentHour < 8) {
+        nextClearTime.setHours(8, 0, 0, 0);  // Next clear at 8 AM
+    } else if (currentHour >= 8 && currentHour < 20) {
+        nextClearTime.setHours(20, 0, 0, 0);  // Next clear at 8 PM
+    } else {
+        nextClearTime.setHours(32, 0, 0, 0);  // Next clear at 8 AM (next day)
+    }
+
+    const timeUntilNextClear = nextClearTime - currentDateTime;
+
+    console.log(`Next auto-clear scheduled in ${Math.round(timeUntilNextClear / 3600000)} hours.`);
+    
+    setTimeout(() => {
+        resetAllSlots();
+        startAutoClear();  // Start the next 12-hour cycle
+    }, timeUntilNextClear);  // Clear slots at the next scheduled time
 }
 
 // Function to clear all slots
 function resetAllSlots() {
     document.querySelectorAll('td input[type="text"]').forEach(input => {
-        input.value = '';
-        input.readOnly = false;
-        input.classList.remove('occupied');
+        input.value = '';  // Clear the input value
+        input.readOnly = false;  // Allow editing again
+        input.classList.remove('occupied');  // Remove the occupied class
     });
-    localStorage.removeItem('agentSlots');
+    localStorage.removeItem('agentSlots');  // Clear all stored slots in localStorage
+    agentSlots = {};  // Reset the object
+    console.log('All slots cleared.');
 }
 
-// Toggle the visibility of the reset button with Ctrl + I
-let isResetButtonVisible = false;
+// Toggle edit mode to clear individual slots with Ctrl + I
 let isEditMode = false;
 
 document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key === 'i') {
-        event.preventDefault();
-        const resetButton = document.getElementById('adminResetButton');
-        if (!isResetButtonVisible) {
-            resetButton.style.display = 'inline-block';
-            isEditMode = true;
-        } else {
-            resetButton.style.display = 'none';
-            isEditMode = false;
-        }
-        isResetButtonVisible = !isResetButtonVisible;
+        event.preventDefault();  // Prevent default Ctrl + I behavior
+        isEditMode = !isEditMode;  // Toggle edit mode
+        console.log(`Edit mode ${isEditMode ? 'ON' : 'OFF'}`);
     }
 });
 
-// Function to reset daily at 08:00 Tbilisi time
-function resetDailyAt8AM() {
-    const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
-    const currentDateTime = new Date(now);
-
-    if (currentDateTime.getHours() === 8 && currentDateTime.getMinutes() === 0 && currentDateTime.getSeconds() === 0) {
-        resetAllSlots();
-    }
-}
-
 window.onload = () => {
-    createTimeSlots();
-    displayCurrentTime();
-    setInterval(resetDailyAt8AM, 1000);
+    createTimeSlots();  // Initialize time slots
+    displayCurrentTime();  // Display current time
+    startAutoClear();  // Start the 12-hour auto-clear cycle
 };
