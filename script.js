@@ -1,7 +1,7 @@
 // Time zone for Georgia (Tbilisi)
 const TIMEZONE = 'Asia/Tbilisi';
 
-// Time slots with 4 slots per half-hour
+// Time slots with 6 slots per half-hour
 const timeSlots = [
     "09:00", "09:30", "10:00", "10:30", "11:00", 
     "12:00", "13:00", "14:00", "15:00", 
@@ -30,30 +30,33 @@ function createTimeSlots() {
 
     timeSlots.forEach((slot) => {
         const row = document.createElement('tr');
-        
-        // Create the time slot cell (label)
         const timeCell = document.createElement('td');
         timeCell.textContent = slot;
         row.appendChild(timeCell);
 
-        // Create 4 slots for each time
-        for (let i = 1; i <= 4; i++) {
+        for (let i = 1; i <= 6; i++) {
             const cell = document.createElement('td');
             const input = document.createElement('input');
             input.type = 'text';
             input.value = agentSlots[slot] && agentSlots[slot][i - 1] ? agentSlots[slot][i - 1] : '';
             input.placeholder = 'Enter Name';
 
-            // If the name was already entered, make the input read-only
             if (input.value) {
+                input.classList.add('occupied');
                 input.readOnly = true;
             }
 
-            // Update localStorage and set to read-only after entry
             input.onchange = function () {
                 updateSlot(slot, input.value, i);
-                input.readOnly = true;  // Make the input read-only after name is entered
+                input.classList.add('occupied');
+                input.readOnly = true;
             };
+
+            cell.addEventListener('click', () => {
+                if (isEditMode && input.value !== '') {
+                    clearSlot(slot, i);
+                }
+            });
 
             cell.appendChild(input);
             row.appendChild(cell);
@@ -63,47 +66,65 @@ function createTimeSlots() {
     });
 }
 
+// Function to clear a specific slot
+function clearSlot(timeSlot, agentNumber) {
+    if (agentSlots[timeSlot]) {
+        agentSlots[timeSlot][agentNumber - 1] = '';
+        localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
+        location.reload();
+    }
+}
+
 // Function to update the agent slot and save to localStorage
 function updateSlot(slot, agentName, slotNumber) {
     if (!agentSlots[slot]) {
         agentSlots[slot] = [];
     }
     agentSlots[slot][slotNumber - 1] = agentName;
-
-    // Save updated slots to localStorage
     localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
 }
 
-// Function to clear all inputs and reset the localStorage
+// Function to clear all slots
 function resetAllSlots() {
-    console.log("Resetting all slots to empty values.");
-    // Clear all inputs from the UI
     document.querySelectorAll('td input[type="text"]').forEach(input => {
         input.value = '';
-        input.readOnly = false; // Allow editing again after reset
+        input.readOnly = false;
+        input.classList.remove('occupied');
     });
-
-    // Clear the localStorage
     localStorage.removeItem('agentSlots');
-    agentSlots = {};
 }
+
+// Toggle the visibility of the reset button with Ctrl + I
+let isResetButtonVisible = false;
+let isEditMode = false;
+
+document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey && event.key === 'i') {
+        event.preventDefault();
+        const resetButton = document.getElementById('adminResetButton');
+        if (!isResetButtonVisible) {
+            resetButton.style.display = 'inline-block';
+            isEditMode = true;
+        } else {
+            resetButton.style.display = 'none';
+            isEditMode = false;
+        }
+        isResetButtonVisible = !isResetButtonVisible;
+    }
+});
 
 // Function to reset daily at 08:00 Tbilisi time
 function resetDailyAt8AM() {
     const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
     const currentDateTime = new Date(now);
 
-    // Reset at exactly 08:00:00 Tbilisi time
     if (currentDateTime.getHours() === 8 && currentDateTime.getMinutes() === 0 && currentDateTime.getSeconds() === 0) {
-        resetAllSlots();  // Call reset function
+        resetAllSlots();
     }
 }
 
-// Create the time slots on page load
 window.onload = () => {
     createTimeSlots();
     displayCurrentTime();
-
-    // Check every second to reset at 08:00:00
     setInterval(resetDailyAt8AM, 1000);
 };
