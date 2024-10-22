@@ -1,7 +1,7 @@
 // Time zone for Georgia (Tbilisi)
 const TIMEZONE = 'Asia/Tbilisi';
 
-// Time slots with 6 slots per half-hour
+// Time slots with 4 slots per half-hour
 const timeSlots = [
     "09:00", "09:30", "10:00", "10:30", "11:00", 
     "12:00", "13:00", "14:00", "15:00", 
@@ -34,7 +34,7 @@ function createTimeSlots() {
         timeCell.textContent = slot;
         row.appendChild(timeCell);
 
-        for (let i = 1; i <= 6; i++) {
+        for (let i = 1; i <= 4; i++) {  // Change to 4 agents
             const cell = document.createElement('td');
             const input = document.createElement('input');
             input.type = 'text';
