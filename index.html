@@ -1,1 +1,36 @@
-<H1> UNDER CONSTRUCTION, COME BACK LATER</H1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Have A NICE BREAK </title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Agent Break Time Slot Manager (4 Agents)</h1>
+            <div class="current-time" id="currentTime"></div>
+        </header>
+
+        <table class="time-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Agent 1</th>
+                    <th>Agent 2</th>
+                    <th>Agent 3</th>
+                    <th>Agent 4</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Time slots will be dynamically generated here -->
+            </tbody>
+        </table>
+
+        <div class="error" id="errorMessage"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
