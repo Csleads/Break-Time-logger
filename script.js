@@ -44,9 +44,15 @@ function createTimeSlots() {
             input.value = agentSlots[slot] && agentSlots[slot][i - 1] ? agentSlots[slot][i - 1] : '';
             input.placeholder = 'Enter Name';
 
-            // Update localStorage on change
+            // If the name was already entered, make the input read-only
+            if (input.value) {
+                input.readOnly = true;
+            }
+
+            // Update localStorage and set to read-only after entry
             input.onchange = function () {
                 updateSlot(slot, input.value, i);
+                input.readOnly = true;  // Make the input read-only after name is entered
             };
 
             cell.appendChild(input);
@@ -68,15 +74,28 @@ function updateSlot(slot, agentName, slotNumber) {
     localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
 }
 
-// Clear all slots and reset localStorage at the end of the day
-function resetDailySlots() {
-    const now = new Date();
-    const resetHour = 8; // Reset at 8:00 AM Georgian time
+// Function to clear all inputs and reset the localStorage
+function resetAllSlots() {
+    console.log("Resetting all slots to empty values.");
+    // Clear all inputs from the UI
+    document.querySelectorAll('td input[type="text"]').forEach(input => {
+        input.value = '';
+        input.readOnly = false; // Allow editing again after reset
+    });
 
-    if (now.getHours() === resetHour && now.getMinutes() === 0) {
-        localStorage.removeItem('agentSlots');
-        agentSlots = {};
-        document.querySelectorAll('td input[type="text"]').forEach(input => input.value = '');
+    // Clear the localStorage
+    localStorage.removeItem('agentSlots');
+    agentSlots = {};
+}
+
+// Function to reset daily at 08:00 Tbilisi time
+function resetDailyAt8AM() {
+    const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
+    const currentDateTime = new Date(now);
+
+    // Reset at exactly 08:00:00 Tbilisi time
+    if (currentDateTime.getHours() === 8 && currentDateTime.getMinutes() === 0 && currentDateTime.getSeconds() === 0) {
+        resetAllSlots();  // Call reset function
     }
 }
 
@@ -85,12 +104,6 @@ window.onload = () => {
     createTimeSlots();
     displayCurrentTime();
 
-    // Check for daily reset every minute
-    setInterval(resetDailySlots, 60000); // Check every minute
+    // Check every second to reset at 08:00:00
+    setInterval(resetDailyAt8AM, 1000);
 };
-
-// Add this to your index.html file or a separate JavaScript file
-var password = prompt("Please enter the password to access this page:");
-if (password !== "csḃreak76") {
-    document.body.innerHTML = "Unauthorized Access";
-}
