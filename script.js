@@ -144,13 +144,7 @@ window.onload = () => {
     startAutoClear();  // Start the 12-hour auto-clear cycle
 };
 
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
+ const firebaseConfig = {
     apiKey: "AIzaSyA_ZfIN4L2lxv7nD9kMIXW-lHuvbR-9iyE",
     authDomain: "break-time-logger-db46a.firebaseapp.com",
     projectId: "break-time-logger-db46a",
@@ -160,43 +154,9 @@ window.onload = () => {
     measurementId: "G-QY9QRWH3YZ"
   };
 
-  // Initialize Firebase
+   
   const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);  // Initialize the Realtime Database
+  const analytics = getAnalytics(app);
 
-  // Function to load slots from Firebase Realtime Database
-  const loadSlots = () => {
-    const slotsRef = ref(database, 'slots/');
-    
-    // Listen for changes in the slots data
-    onValue(slotsRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        Object.keys(data).forEach((slotTime) => {
-          const slotInfo = data[slotTime];
-          slotInfo.forEach((agentName, index) => {
-            const input = document.querySelector(`#slot-${slotTime}-${index + 1}`);
-            if (input) {
-              input.value = agentName;
-              input.classList.add('occupied');
-              input.readOnly = true;
-            }
-          });
-        });
-      }
-    });
-  };
-
-  // Function to update slots in Firebase
-  const updateSlot = (slotTime, agentName, slotNumber) => {
-    const slotsRef = ref(database, 'slots/' + slotTime + '/' + (slotNumber - 1));
-    set(slotsRef, agentName);  // Update the specific slot in Firebase
-  };
-
-  // Call loadSlots on page load
-  window.onload = function () {
-    createTimeSlots();  // Your existing function to generate the table
-    loadSlots();  // Load data from Firebase
-  };
 </script>
 
