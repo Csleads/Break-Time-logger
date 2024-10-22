@@ -1,7 +1,7 @@
 // Time zone for Georgia (Tbilisi)
 const TIMEZONE = 'Asia/Tbilisi';
 
-// Time slots with 6 slots per half-hour
+// Time slots with 4 slots per half-hour
 const timeSlots = [
     "09:00", "09:30", "10:00", "10:30", "11:00", 
     "12:00", "13:00", "14:00", "15:00", 
@@ -36,17 +36,23 @@ function createTimeSlots() {
         timeCell.textContent = slot;
         row.appendChild(timeCell);
 
-        // Create 6 slots for each time
-        for (let i = 1; i <= 6; i++) {
+        // Create 4 slots for each time
+        for (let i = 1; i <= 4; i++) {
             const cell = document.createElement('td');
             const input = document.createElement('input');
             input.type = 'text';
             input.value = agentSlots[slot] && agentSlots[slot][i - 1] ? agentSlots[slot][i - 1] : '';
             input.placeholder = 'Enter Name';
 
-            // Update localStorage on change
+            // If the name was already entered, make the input read-only
+            if (input.value) {
+                input.readOnly = true;
+            }
+
+            // Update localStorage and set to read-only after entry
             input.onchange = function () {
                 updateSlot(slot, input.value, i);
+                input.readOnly = true;  // Make the input read-only after name is entered
             };
 
             cell.appendChild(input);
@@ -68,15 +74,28 @@ function updateSlot(slot, agentName, slotNumber) {
     localStorage.setItem('agentSlots', JSON.stringify(agentSlots));
 }
 
-// Clear all slots and reset localStorage at the end of the day
-function resetDailySlots() {
-    const now = new Date();
-    const resetHour = 8; // Reset at 8:00 AM Georgian time
+// Function to clear all inputs and reset the localStorage
+function resetAllSlots() {
+    console.log("Resetting all slots to empty values.");
+    // Clear all inputs from the UI
+    document.querySelectorAll('td input[type="text"]').forEach(input => {
+        input.value = '';
+        input.readOnly = false; // Allow editing again after reset
+    });
 
-    if (now.getHours() === resetHour && now.getMinutes() === 0) {
-        localStorage.removeItem('agentSlots');
-        agentSlots = {};
-        document.querySelectorAll('td input[type="text"]').forEach(input => input.value = '');
+    // Clear the localStorage
+    localStorage.removeItem('agentSlots');
+    agentSlots = {};
+}
+
+// Function to reset daily at 08:00 Tbilisi time
+function resetDailyAt8AM() {
+    const now = new Date().toLocaleString("en-US", { timeZone: TIMEZONE });
+    const currentDateTime = new Date(now);
+
+    // Reset at exactly 08:00:00 Tbilisi time
+    if (currentDateTime.getHours() === 8 && currentDateTime.getMinutes() === 0 && currentDateTime.getSeconds() === 0) {
+        resetAllSlots();  // Call reset function
     }
 }
 
@@ -85,11 +104,6 @@ window.onload = () => {
     createTimeSlots();
     displayCurrentTime();
 
-    // Check for daily reset every minute
-    setInterval(resetDailySlots, 60000); // Check every minute
+    // Check every second to reset at 08:00:00
+    setInterval(resetDailyAt8AM, 1000);
 };
-
-var password = prompt("Please enter the password to access this page:");
-if (password !== "csḃreak76") {
-    document.body.innerHTML = "Unauthorized Access";
-}
