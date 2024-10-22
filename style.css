@@ -21,7 +21,7 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     animation: fadeIn 0.5s ease;
-    max-width: 100%; /* Make sure container spans full width */
+    max-width: 100%;
 }
 
 /* Header styles */
@@ -82,9 +82,15 @@ h1 {
 
 .time-table td input:focus {
     border-color: #0366d6;
-    box-shadow: 0 0 10px rgba(3, 102, 214, 0.3);
     outline: none;
     background-color: #eef4fb;
+}
+
+/* Occupied slots with modern border and background */
+.time-table td input.occupied {
+    background-color: #ffe6e6;
+    border-color: #ff4d4d;
+    transition: border 0.3s ease, background-color 0.3s ease;
 }
 
 /* Input field hover animation */
