@@ -33,9 +33,30 @@
     </div>
 
 <script src="script.js?v=1.0"></script>
-<script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js"></script>
 
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2UPYjU85Yam4aN1cvA0GTsoWQ5RMoLjo",
+    authDomain: "breaktimer-bb662.firebaseapp.com",
+    projectId: "breaktimer-bb662",
+    storageBucket: "breaktimer-bb662.appspot.com",
+    messagingSenderId: "691709998367",
+    appId: "1:691709998367:web:84b94b1540ffcd71286c2a",
+    measurementId: "G-TX1ZJSTPNW"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
 </body>
 </html>
