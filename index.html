@@ -1,16 +1,17 @@
+this is mt hmtl file, please put it correctly
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css?v=1.0" rel="stylesheet">
+    <title>Break slots</title>
+   <link href="style.css?v=1.0" rel="stylesheet">
 
-    <title>Break Slots</title>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>HAVE A NICE BREAK</h1>
+            <h1> HAVE A NICE BREAK </h1>
             <div class="current-time" id="currentTime"></div>
         </header>
 
@@ -30,88 +31,13 @@
         </table>
 
         <div class="error" id="errorMessage"></div>
-
-        <!-- Form to submit break time -->
-        <form onsubmit="handleFormSubmit(event)">
-            <input type="text" id="agentNameInput" placeholder="Agent Name" required />
-            <input type="text" id="breakTimeInput" placeholder="Break Time" required />
-            <button type="submit">Submit Break</button>
-        </form>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js"></script>
+<script src="script.js?v=1.0"></script>
+<script src="firebase.js"></script>
 
-    <!-- Firebase Initialization and App Code -->
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCWS9v_duLvbGx_C6wifRKkDFHLZjzc6d8",
-            authDomain: "break-time-logger-3ddff.firebaseapp.com",
-            projectId: "break-time-logger-3ddff",
-            storageBucket: "break-time-logger-3ddff.appspot.com",
-            messagingSenderId: "979239426837",
-            appId: "1:979239426837:web:70790b8110573509fe271c",
-            measurementId: "G-3PY2H35QKL"
-        };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
 
-        // Function to submit break time for an agent
-        function submitBreakTime(agentName, breakTime) {
-            database.ref("breakTimes/" + agentName).set({
-                time: breakTime,
-                timestamp: new Date().toISOString()
-            });
-        }
 
-        // Function to fetch and display break times in real-time
-        function fetchBreakTimes() {
-            database.ref("breakTimes").on("value", (snapshot) => {
-                const data = snapshot.val();
-                displayBreakTimes(data);
-            });
-        }
-
-        // Function to display fetched break times in the table
-        function displayBreakTimes(data) {
-            const tableBody = document.getElementById("tableBody");
-            tableBody.innerHTML = ""; // Clear existing entries
-
-            for (let agent in data) {
-                const row = document.createElement("tr");
-
-                // Add agent name and break time to the row
-                const nameCell = document.createElement("td");
-                nameCell.textContent = agent;
-                row.appendChild(nameCell);
-
-                const timeCell = document.createElement("td");
-                timeCell.textContent = data[agent].time;
-                row.appendChild(timeCell);
-
-                tableBody.appendChild(row);
-            }
-        }
-
-        // Handle form submission
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            const agentName = document.getElementById("agentNameInput").value;
-            const breakTime = document.getElementById("breakTimeInput").value;
-
-            submitBreakTime(agentName, breakTime);
-
-            // Clear the form fields
-            document.getElementById("agentNameInput").value = "";
-            document.getElementById("breakTimeInput").value = "";
-        }
-
-        // Load break times on page load
-        document.addEventListener("DOMContentLoaded", fetchBreakTimes);
-    </script>
 </body>
 </html>
