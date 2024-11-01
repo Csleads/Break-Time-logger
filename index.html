@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Break slots</title>
-   <link href="style.css?v=1.0" rel="stylesheet">
-
+    <title>Break Slots</title>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1> HAVE A NICE BREAK </h1>
+            <h1>HAVE A NICE BREAK</h1>
             <div class="current-time" id="currentTime"></div>
         </header>
 
@@ -32,11 +30,26 @@
         <div class="error" id="errorMessage"></div>
     </div>
 
-<script src="script.js?v=1.0"></script>
-<script src="firebase.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js"></script>
 
+    <!-- Firebase Initialization -->
+    <script>
+        // Firebase configuration object
+        const firebaseConfig = {
+            apiKey: "AIzaSyCWS9v_duLvbGx_C6wifRKkDFHLZjzc6d8",
+            authDomain: "break-time-logger-3ddff.firebaseapp.com",
+            projectId: "break-time-logger-3ddff",
+            storageBucket: "break-time-logger-3ddff.appspot.com",
+            messagingSenderId: "979239426837",
+            appId: "1:979239426837:web:70790b8110573509fe271c",
+            measurementId: "G-3PY2H35QKL"
+        };
 
-
-
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
 </body>
 </html>
